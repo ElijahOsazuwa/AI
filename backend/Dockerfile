@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install dependencies first for better Docker layer caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Default command — overridden in docker-compose for the worker service
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
